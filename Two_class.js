@@ -34,16 +34,43 @@ class Player extends Obj{
     dir = 0
     pts = 0
     vida = 5
+    speed = 0
+
+    frame = 1
+    tempo = 0
+
+    anim(nome){
+        this.tempo +=1
+        if(this.tempo > 5){
+            this.tempo = 0
+            this.frame += 1
+        }
+        if(this.frame>8){
+            this.frame = 1
+        }
+        this.a = "assets/"+nome+this.frame+".png"
+    }
 
     mov(){
-        this.x += this.dir
+        this.speed += this.dir * 0.1
+        this.speed *= 0.9; // Aplicando uma pequena resistência para suavizar o movimento
+        this.x += this.speed
+
+        // Limitando a velocidade máxima do jogador
+        if (this.speed > 3) {
+            this.speed = 3
+        } else if (this.speed < -3) {
+            this.speed = -3
+        }
+
         if(this.x <= 0){
             this.x = 0
-        }else if(this.x >= 900){
+            this.speed = 0
+        } else if(this.x >= 900){
             this.x = 900
+            this.speed = 0
         }
     }
-    
 }
 
 class Inimigo extends Obj{
@@ -66,10 +93,6 @@ class Inimigo extends Obj{
             this.atira()
             this.tempoProximoTiro = Math.random() * 350 // define um novo tempo para o próximo tiro
         }
-    }
-    recomeca(){
-        this.y = -100
-        this.x = Math.floor(Math.random() * ((950 - 2 + 1) + 2)) // quando o inimigo morrer
     }
 
     vel = Math.random() * (2 - 0.5) + 0.5
@@ -112,11 +135,10 @@ class TiroInimigo extends Obj{
     }
 
     mov(){
-        this.y += 3
+        this.y += 1
+        this.x += player.x
+        this.x -= player.x
     }
-}
-
-class Arma extends Obj{
 }
 
 class Text{

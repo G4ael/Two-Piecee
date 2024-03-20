@@ -1,13 +1,15 @@
 let des =document.getElementById('des').getContext('2d')
 
-let player = new Player(100,500,60,70,'./assets/frente.png')
+let player = new Player(100,450,120,150,'./assets/mago_1.png')
 let text1 = new Text(100,100,50,50,'red') 
 let text2 = new Text(100,100,50,50,'red') 
 let text3 = new Text(100,100,50,50,'red') 
 let text4 = new Text(100,100,50,50,'red')
 let text5 = new Text(100,100,50,50,'red')
-//mudar o nome das variaveis ex: text_life
-const sondtrack_1 = new Audio('')
+
+let spell = new Audio('assets/spell.mp3')
+spell.volume = 1
+
 const sondtrack_2 = new Audio('')
 const sondtrack_3 = new Audio('')
 const sondtrack_4 = new Audio('')
@@ -23,21 +25,18 @@ function game_over(){
 
 //tiro
 document.addEventListener('click', (event) => {
-    const mouseX = event.clientX;
-    const mouseY = event.clientY;
-
-    const angle = Math.atan2(mouseY - (player.y + player.h/2), mouseX - (player.x + player.w/2));
-
+    spell.play()
+    const mouseX = event.clientX
+    const mouseY = event.clientY
+    const angle = Math.atan2(mouseY - (player.y + player.h/2), mouseX - (player.x + player.w/2))
     const velocity = 5; // velocidade do tiro
-
-    const velX = Math.cos(angle) * velocity;
-    const velY = Math.sin(angle) * velocity;
-
-    grupoTiros.push(new Tiro(player.x - 40 + player.w, player.y - 40, 30, 30, './assets/tiro.png', velX, velY));
-});
+    const velX = Math.cos(angle) * velocity
+    const velY = Math.sin(angle) * velocity
+    grupoTiros.push(new Tiro(player.x - 40 + player.w, player.y - 40, 40, 40, './assets/tiro_1.png', velX, velY));
+})
 
 let grupoTiros = [] 
-let grupoTirosInimigo = [] // Novo array para os tiros dos inimigos
+let grupoTirosInimigo = []
 let tiros = {
     des(){
         grupoTiros.forEach((tiro)=>{
@@ -52,6 +51,7 @@ let tiros = {
             tiro.mov()
             if(tiro.y <= -10){
                 grupoTiros.splice(tiro[0],1)
+                // anim aqui 
             }
 
             if(tiro.colid(player) && tiro.a !== player.a){
@@ -65,8 +65,11 @@ let tiros = {
                     grupoTiros.splice(grupoTiros.indexOf(tiro), 1); // Remove o tiro do jogador
                     grupoTirosInimigo.splice(index, 1); // Remove o tiro do inimigo
                 }
-            });
+            })
         })
+        //Ou aqui
+
+        
 
         grupoTirosInimigo.forEach((tiro)=>{
             tiro.mov()
@@ -97,7 +100,7 @@ let inimigo = {
         let pos_x3 = (Math.random() * (900 - 2 +1)+2)
         if(this.time1 >=60){
             this.time1 = 0
-            grupoInimigo.push(new Inimigo(pos_x,-200,50,50,'yellow'))
+            grupoInimigo.push(new Inimigo(pos_x,-200,50,50,'assets/bat_1.png'))
             console.log(grupoInimigo)
         }
         if(this.time2 >=85){
@@ -139,21 +142,19 @@ let inimigo = {
 
 
 document.addEventListener('keydown',(e)=>{
-    // console.log(e.key)
     if(e.key === 'a'){
-        player.dir -= 5
-    }else if(e.key === 'd'){
-        player.dir += 5
-    }
-})
-document.addEventListener('keyup', (e)=>{
-    if(e.key === 'a'){
-        player.dir = 0
-    }else if(e.key === 'd'){
-        player.dir = 0
-    }
-})
+        player.dir = -15; 
 
+    } else if(e.key === 'd'){
+        player.dir = 15;
+    }
+});
+
+document.addEventListener('keyup', (e)=>{
+    if(e.key === 'a' || e.key === 'd'){
+        player.dir = 0; // Parando o movimento quando a tecla for liberada
+    }
+});
 
 
 function desenha(){
@@ -177,6 +178,7 @@ function atualiza(){
 
     if(jogar){
         player.mov()
+        player.anim('mago_')
         inimigo.atual()
         tiros.atual()
         game_over()
