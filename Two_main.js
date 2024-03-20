@@ -22,7 +22,6 @@ function game_over(){
         jogar = false
     }
 }
-
 //tiro
 document.addEventListener('click', (event) => {
     spell.play()
@@ -69,8 +68,6 @@ let tiros = {
         })
         //Ou aqui
 
-        
-
         grupoTirosInimigo.forEach((tiro)=>{
             tiro.mov()
             if(tiro.y >= 630){
@@ -100,23 +97,23 @@ let inimigo = {
         let pos_x3 = (Math.random() * (900 - 2 +1)+2)
         if(this.time1 >=60){
             this.time1 = 0
-            grupoInimigo.push(new Inimigo(pos_x,-200,50,50,'assets/bat_1.png'))
+            grupoInimigo.push(new Inimigo(pos_x,-200,70,70,'./assets/bat_1.png'))
             console.log(grupoInimigo)
         }
         if(this.time2 >=85){
             this.time2 = 0
-            grupoInimigo.push(new Inimigo(pos_x2,-300,50,50,'yellow'))
+            grupoInimigo.push(new Inimigo(pos_x2,-300,70,70,'blue'))
             console.log(grupoInimigo)
         }
         if(this.time3 >=135){
             this.time3 = 0
-            grupoInimigo.push(new Inimigo(pos_x3,-400,50,50,'yellow'))
+            grupoInimigo.push(new Inimigo(pos_x3,-400,70,70,'yellow'))
             console.log(grupoInimigo)
         }
     },
     des(){
         grupoInimigo.forEach((inimigo)=>{
-            inimigo.des_obj()
+            inimigo.des_img()
         })
     },
     destroiInimigo(){
@@ -184,6 +181,7 @@ function atualiza(){
         game_over()
     }
 }
+
 
 function main(){
     des.clearRect(0,0,950,630)

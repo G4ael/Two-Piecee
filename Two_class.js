@@ -135,9 +135,7 @@ class TiroInimigo extends Obj{
     }
 
     mov(){
-        this.y += 1
-        this.x += player.x
-        this.x -= player.x
+        this.y += 3
     }
 }
 
