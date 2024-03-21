@@ -1,14 +1,19 @@
 let des = document.getElementById('des').getContext('2d')
 
-let player = new Player(100,450,120,150,'./assets/mago_1.png')
+let player = new Player(100,428,120,150,'./assets/mago_1.png')
 let text1 = new Text() 
 let text2 = new Text() 
 let text3 = new Text() 
 let text4 = new Text()
 let text5 = new Text()
 
-let linha1 = new Obj(900, 0, 10, 580)
-let linha2 = new Obj(0, 570, 1350, 100)
+let gato = new Obj(100, 100, 10, 10, './assets/gato_1.png')
+
+let linha1 = new Obj(900, 0, 10, 610)
+let linha1_1 = new Obj(0, 0, 10, 610)
+let linha1_2 = new Obj(1275, 0, 10, 610)
+let linha2 = new Obj(10, 570, 890, 60, './assets/foor.png')
+let linha2_2 = new Obj(0, 610, 1350, 100)
 let linha3 = new Obj(0, -90, 1350, 100)
 
 let barra1 = new Obj(100,100,100,20,'./assets/vida_1.png')
@@ -58,19 +63,18 @@ let tiros = {
         grupoTiros.forEach((tiro)=>{
             tiro.mov()
             tiro.anim('tiro_')
-            if(tiro.y <= -10){
+            if(tiro.y <= -5){
                 grupoTiros.splice(tiro[0],1)
-                // anim aqui 
             }
-            if (tiro.colid(linha1)) {
+            if (tiro.colid(linha1)){
                 grupoTiros.splice(grupoTiros.indexOf(tiro), 1);
             }
             
-            if (tiro.colid(linha2)) {
-                grupoTiros.splice(grupoTiros.indexOf(tiro), 1);
+            if (tiro.colid(linha2)){
+                 grupoTiros.splice(grupoTiros.indexOf(tiro), 1);
             }
 
-            if (tiro.colid(linha3)) {
+            if (tiro.colid(linha3)){
                 grupoTiros.splice(grupoTiros.indexOf(tiro), 1);
             }
 
@@ -88,7 +92,6 @@ let tiros = {
             })
         })
 
-        //Ou aqui
 
         grupoTirosInimigo.forEach((tiro)=>{
             tiro.mov()
@@ -111,25 +114,25 @@ let inimigo = {
     time3: 0,
 
     criaInimigo(){
-        this.time1 += 0.5
-        this.time2 += 0.5
-        this.time3 += 0.5
+        this.time1 += 0.4
+        this.time2 += 0.4
+        this.time3 += 0.4
         let pos_x = (Math.random() * (835 - 2 +1)+2)
         let pos_x2 = (Math.random() * (835 - 2 +1)+2)
         let pos_x3 = (Math.random() * (835 - 2 +1)+2)
         if(this.time1 >=60){
             this.time1 = 0
-            grupoInimigo.push(new Inimigo(pos_x,-200,70,70,'./assets/Morcego_1.png'))
+            grupoInimigo.push(new Inimigo(pos_x,-200,80,80,'./assets/Morcego_1.png'))
             console.log(grupoInimigo)
         }
         if(this.time2 >=85){
             this.time2 = 0
-            grupoInimigo.push(new Inimigo(pos_x2,-300,70,70,'./assets/Morcego_2.png'))
+            grupoInimigo.push(new Inimigo(pos_x2,-300,80,80,'./assets/Morcego_2.png'))
             console.log(grupoInimigo)
         }
         if(this.time3 >=135){
             this.time3 = 0
-            grupoInimigo.push(new Inimigo(pos_x3,-400,70,70,'./assets/Morcego_2.png'))
+            grupoInimigo.push(new Inimigo(pos_x3,-400,80,80,'./assets/Morcego_2.png'))
             console.log(grupoInimigo)
         }
     },
@@ -154,6 +157,7 @@ let inimigo = {
         this.destroiInimigo()
         grupoInimigo.forEach((inimigo)=>{
             inimigo.mov()
+            inimigo.anim('Morcego_')
             inimigo.atual_inimigo()
         })
     }
@@ -178,22 +182,35 @@ document.addEventListener('keyup', (e)=>{
 
 function desenha(){
     bg.des_img()
+
     text1.des_text('Pontos: ',950, 80, 'White', '26px Times')
     text2.des_text('Vida: ',950, 150, 'White', '26px Times')
     text3.des_text(player.pts, 1040, 80, 'White', '26px Times')
-    //text4.des_text(player.vida,1020, 150, 'White', '26px Times')
-    linha1.des_obj()
-    linha2.des_obj()
-    linha3.des_obj()
 
 
     player.des_vida()
 
     if(jogar){
-        player.des_img()
         inimigo.des()
         tiros.des()
+
+
+        linha1.des_obj()
+        linha1_1.des_obj()
+        linha1_2.des_obj()
+        linha2.des_img() 
+        linha2_2.des_obj()
+        linha3.des_obj()
+
+        player.des_img()
     }else{
+        linha1.des_obj()
+        linha1_1.des_obj()
+        linha1_2.des_obj()
+        linha2.des_img() 
+        linha2_2.des_obj()
+        linha3.des_obj()
+
         text5.des_text('Game Over',350, 330, 'White', '55px Times')
     }
 
@@ -206,6 +223,7 @@ function atualiza(){
         player.mov()
         player.anim('mago_')
         inimigo.atual()
+        inimigo.atual('Morcego_')
         tiros.atual('tiro_')
         tiros.atual()
         game_over()

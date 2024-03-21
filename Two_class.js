@@ -98,6 +98,21 @@ class Inimigo extends Obj{
     intervaloTiro = 60 // intervalo de tempo entre os tiros dos inimigos
     tempoTiro = 0
 
+    tempo = 0
+    frame = 1
+
+    anim(nome){
+        this.tempo +=1
+        if(this.tempo > 40){
+            this.tempo = 0
+            this.frame += 1
+        }
+        if(this.frame>2){
+            this.frame = 1
+        }
+        this.a = "assets/"+nome+this.frame+".png"
+    }
+
     atual_inimigo(){
         if(this.y <= this.pararY){
             this.y += 0.5
