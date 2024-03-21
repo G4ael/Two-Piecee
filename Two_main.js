@@ -93,6 +93,7 @@ let tiros = {
         })
     }
 }
+s
 
 let grupoInimigo = []
 let inimigo = {
@@ -139,6 +140,9 @@ let inimigo = {
             })
         })
     },
+
+
+    
     atual(){
         this.criaInimigo()
         this.destroiInimigo()
@@ -166,13 +170,11 @@ document.addEventListener('keyup', (e)=>{
     }
 })
 
-
-
 function desenha(){
-    text1.des_text('Pontos: ',950, 80, 'White', '26px Times')
-    text2.des_text('Vida: ',950, 150, 'White', '26px Times')
-    text3.des_text(player.pts, 1040, 80, 'White', '26px Times')
-    text4.des_text(player.vida,1020, 150, 'White', '26px Times')
+    point.des_text('Pontos: ',950, 80, 'White', '26px Times')
+    life.des_text('Vida: ',950, 150, 'White', '26px Times')
+    player_point.des_text(player.pts, 1040, 80, 'White', '26px Times')
+    Player_lives.des_text(player.vida,1020, 150, 'White', '26px Times')
     linha1.des_obj()
     linha2.des_obj()
     if(jogar){

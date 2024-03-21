@@ -30,22 +30,6 @@ class Obj{
 
 }
 
-class Player extends Obj{
-    dir = 0
-    pts = 0
-    vida = 5
-
-    mov(){
-        this.x += this.dir
-        if(this.x <= 0){
-            this.x = 0
-        }else if(this.x >= 835){
-            this.x = 835
-        }
-    }
-    
-}
-
 class Inimigo extends Obj{
     vida_inimigo = 5
     pararY = 180  // posição onde o inimigo vai parar
@@ -113,6 +97,49 @@ class TiroInimigo extends Obj{
 
     mov(){
         this.y += 3
+    }
+}
+
+class Player extends Obj{
+    dir = 0
+    pts = 0
+    vida = 5
+    speed = 0
+
+    frame = 1
+    tempo = 0
+
+    anim(nome){
+        this.tempo +=1
+        if(this.tempo > 5){
+            this.tempo = 0
+            this.frame += 1
+        }
+        if(this.frame>8){
+            this.frame = 1
+        }
+        this.a = "assets/"+nome+this.frame+".png"
+    }
+
+    mov(){
+        this.speed += this.dir * 0.1
+        this.speed *= 0.9; // Aplicando uma pequena resistência para suavizar o movimento
+        this.x += this.speed
+
+        // Limitando a velocidade máxima do jogador
+        if (this.speed > 3) {
+            this.speed = 3
+        } else if (this.speed < -3) {
+            this.speed = -3
+        }
+
+        if(this.x <= 0){
+            this.x = 0
+            this.speed = 0
+        } else if(this.x >= 900){
+            this.x = 900
+            this.speed = 0
+        }
     }
 }
 
