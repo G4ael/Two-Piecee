@@ -1,6 +1,6 @@
 let des =document.getElementById('des').getContext('2d')
 
-let player = new Player(100,500,60,70,'./assets/frente.png')
+let player = new Player(100,500,60,70,'./assets/mago_1.png')
 let text1 = new Text() 
 let text2 = new Text() 
 let text3 = new Text() 
@@ -20,6 +20,7 @@ let jogar = true
 function game_over(){
     if(player.vida <=0){
         jogar = false
+        window.location.href = 'game_over.html'
     }
 }
 
