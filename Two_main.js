@@ -33,6 +33,24 @@ const sondtrack_5 = new Audio('')
 
 let jogar = true
 
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        reiniciarJogo();
+        // toda vez q apertar enter o jogo reinicia
+    }
+});
+
+function reiniciarJogo() {
+    player = new Player(100, 428, 120, 150, './assets/mago_1.png');
+    grupoInimigo = [];
+    grupoTiros = [];
+    grupoTirosInimigo = [];
+    player.pts = 0;
+    player.vida = 4;
+    nivel = 1;
+    jogar = true;
+}
+
 function game_over(){
     if(player.vida <=0){
         jogar = false
