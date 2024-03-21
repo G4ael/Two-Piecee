@@ -10,7 +10,7 @@ let text6 = new Text()
 
 let nivel = 1
 
-let gato = new Obj(100, 100, 10, 10, './assets/gato_1.png')
+let gato = new Obj(900, 240, 400, 400, './assets/gato_1.png')
 
 let linha1 = new Obj(900, 0, 10, 610)
 let linha1_1 = new Obj(0, 0, 10, 610)
@@ -220,6 +220,8 @@ function atualizaNivel() {
 
 function desenha(){
     bg.des_img()
+
+    gato.des_img()
 
     text1.des_text('Pontos: ',950, 80, 'White', '26px Pixelify Sans')
     text3.des_text(player.pts, 1060, 80, 'White', '26px Pixelify Sans')
