@@ -6,6 +6,9 @@ let text2 = new Text()
 let text3 = new Text() 
 let text4 = new Text()
 let text5 = new Text()
+let text6 = new Text()
+
+let nivel = 1
 
 let gato = new Obj(100, 100, 10, 10, './assets/gato_1.png')
 
@@ -41,7 +44,19 @@ document.addEventListener('click', (event) => {
     const mouseX = event.clientX
     const mouseY = event.clientY
     const angle = Math.atan2(mouseY - (player.y + player.h/2), mouseX - (player.x + player.w/2))
-    const velocity = 5; // velocidade do tiro
+    this.velocity = 0
+    if(nivel >= 1){
+        this.velocity = 5 // velocidade do tiro
+    }
+    if(nivel >= 2){
+        this.velocity = 10 // velocidade do tiro
+    }
+    if(nivel >= 3){
+        this.velocity = 15 // velocidade do tiro
+    }
+    if(nivel >= 4){
+        this.velocity = 20 // velocidade do tiro
+    }
     const velX = Math.cos(angle) * velocity
     const velY = Math.sin(angle) * velocity
     grupoTiros.push(new Tiro(player.x - 60 + player.w, player.y - 40, 40, 40, './assets/tiro_1.png', velX, velY));
@@ -135,6 +150,23 @@ let inimigo = {
             grupoInimigo.push(new Inimigo(pos_x3,-400,80,80,'./assets/Morcego_2.png'))
             console.log(grupoInimigo)
         }
+    
+        // Ajuste a criação de inimigos com base no nível atual
+        if (nivel >= 2) {
+            this.time1 += 0.5
+            this.time2 += 0.5
+            this.time3 += 0.5
+
+        }else if(nivel >= 3){
+            this.time1 += 0.6
+            this.time2 += 0.6
+            this.time3 += 0.6
+
+        }else if(nivel >= 4){
+            this.time1 += 0.8
+            this.time2 += 0.8
+            this.time3 += 0.8
+        }
     },
     des(){
         grupoInimigo.forEach((inimigo)=>{
@@ -179,13 +211,21 @@ document.addEventListener('keyup', (e)=>{
     }
 });
 
+function atualizaNivel() {
+    if (player.pts >= nivel * 10) { // Verifica se o jogador atingiu um novo nível
+        nivel++
+    }
+}
+
 
 function desenha(){
     bg.des_img()
 
-    text1.des_text('Pontos: ',950, 80, 'White', '26px Times')
-    text2.des_text('Vida: ',950, 150, 'White', '26px Times')
-    text3.des_text(player.pts, 1040, 80, 'White', '26px Times')
+    text1.des_text('Pontos: ',950, 80, 'White', '26px Pixelify Sans')
+    text3.des_text(player.pts, 1060, 80, 'White', '26px Pixelify Sans')
+    text2.des_text('Vida: ',950, 150, 'White', '26px Pixelify Sans')
+    text2.des_text('Nível: ',950, 220, 'White', '26px Pixelify Sans')
+    text2.des_text(nivel ,1020, 220, 'White', '26px Pixelify Sans')
 
 
     player.des_vida()
@@ -227,6 +267,8 @@ function atualiza(){
         tiros.atual('tiro_')
         tiros.atual()
         game_over()
+        atualizaNivel()
+        console.log(nivel)
     }
 }
 
