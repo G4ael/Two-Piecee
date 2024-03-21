@@ -251,7 +251,7 @@ function desenha(){
         linha2_2.des_obj()
         linha3.des_obj()
 
-        text5.des_text('Game Over',350, 330, 'White', '55px Times')
+        text5.des_text('Game Over',340, 320, 'White', '55px Pixelify Sans')
     }
 
     
