@@ -10,7 +10,9 @@ let text6 = new Text()
 
 let nivel = 1
 
-let gato = new Obj(100, 100, 10, 10, './assets/gato_1.png')
+let cenaInicio = true
+
+let gato = new Obj(900, 240, 400, 400, './assets/gato_1.png')
 
 let linha1 = new Obj(900, 0, 10, 610)
 let linha1_1 = new Obj(0, 0, 10, 610)
@@ -24,23 +26,52 @@ let barra1 = new Obj(100,100,100,20,'./assets/vida_1.png')
 let bg = new Obj(0,0,900,621,'./assets/BG.png')
 
 let spell = new Audio('assets/spell.mp3')
-spell.volume = 1
+spell.volume = 0.3
 
-const sondtrack_2 = new Audio('')
-const sondtrack_3 = new Audio('')
-const sondtrack_4 = new Audio('')
-const sondtrack_5 = new Audio('')
+let dead = new Audio('./assets/dead.mp3')
+dead.volume = 0.3
 
-let jogar = true
+let sondtrack1 = new Audio('./assets/sondtrack1.mp3')
+sondtrack1.volume = 0.1
+sondtrack1.loop = true
+
+function reproduzirAudio(audio) {
+    audio.currentTime = 0 // Reinicia o áudio para o início
+    audio.play()
+}
+
+
+let jogar = false
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        reiniciarJogo();
+        // toda vez q apertar enter o jogo reinicia
+    }
+})
+
+function reiniciarJogo() {
+    player = new Player(100, 428, 120, 150, './assets/mago_1.png');
+    grupoInimigo = [];
+    grupoTiros = [];
+    grupoTirosInimigo = [];
+    player.pts = 0;
+    player.vida = 4;
+    nivel = 1;
+    jogar = true;
+    reproduzirAudio(sondtrack1)
+}
 
 function game_over(){
     if(player.vida <=0){
         jogar = false
+        sondtrack1.pause()
+        spell.pause()
     }
 }
 //tiro
 document.addEventListener('click', (event) => {
-    spell.play()
+    reproduzirAudio(spell)
     const mouseX = event.clientX
     const mouseY = event.clientY
     const angle = Math.atan2(mouseY - (player.y + player.h/2), mouseX - (player.x + player.w/2))
@@ -49,13 +80,13 @@ document.addEventListener('click', (event) => {
         this.velocity = 5 // velocidade do tiro
     }
     if(nivel >= 2){
-        this.velocity = 10 // velocidade do tiro
+        this.velocity = 10
     }
     if(nivel >= 3){
-        this.velocity = 15 // velocidade do tiro
+        this.velocity = 15
     }
     if(nivel >= 4){
-        this.velocity = 20 // velocidade do tiro
+        this.velocity = 20
     }
     const velX = Math.cos(angle) * velocity
     const velY = Math.sin(angle) * velocity
@@ -180,6 +211,7 @@ let inimigo = {
                     grupoTiros.splice(grupoTiros.indexOf(tiro), 1)
                     grupoInimigo.splice(grupoInimigo.indexOf(inimigo), 1)
                     player.pts += 1
+                    reproduzirAudio(dead)
                 }
             })
         })
@@ -212,7 +244,7 @@ document.addEventListener('keyup', (e)=>{
 });
 
 function atualizaNivel() {
-    if (player.pts >= nivel * 10) { // Verifica se o jogador atingiu um novo nível
+    if (player.pts >= nivel * 50) { // Verifica se o jogador atingiu um novo nível
         nivel++
     }
 }
@@ -221,9 +253,11 @@ function atualizaNivel() {
 function desenha(){
     bg.des_img()
 
-    text1.des_text('Pontos: ',950, 80, 'White', '26px Pixelify Sans')
-    text3.des_text(player.pts, 1060, 80, 'White', '26px Pixelify Sans')
-    text2.des_text('Vida: ',950, 150, 'White', '26px Pixelify Sans')
+    gato.des_img()
+
+    text1.des_text('Pontos: ',950, 150, 'White', '26px Pixelify Sans')
+    text3.des_text(player.pts, 1060, 151, 'White', '26px Pixelify Sans')
+    text2.des_text('Vida: ',950, 80, 'White', '26px Pixelify Sans')
     text2.des_text('Nível: ',950, 220, 'White', '26px Pixelify Sans')
     text2.des_text(nivel ,1020, 220, 'White', '26px Pixelify Sans')
 
@@ -251,7 +285,8 @@ function desenha(){
         linha2_2.des_obj()
         linha3.des_obj()
 
-        text5.des_text('Game Over',350, 330, 'White', '55px Times')
+        text5.des_text('Game Over',340, 320, 'White', '55px Pixelify Sans')
+        text6.des_text('Pressione Enter para recomeçar', 265, 400, 'White', '26px Pixelify Sans');
     }
 
     
@@ -268,16 +303,45 @@ function atualiza(){
         tiros.atual()
         game_over()
         atualizaNivel()
-        console.log(nivel)
     }
 }
 
+// Função para desenhar a tela de introdução
+function desenhaTelaInicio(){
 
+    
+    des.clearRect(0, 0, 1300, 600);
+    text6.des_text('TWO PIECE', 450, 300, 'White', '80px Pixelify Sans');
+    text6.des_text('TWO', 450, 300, 'green', '80px Pixelify Sans');
+    text6.des_text('Pressione Enter para começar', 450, 350, 'White', '26px Pixelify Sans');
+
+    linha1_1.des_obj()
+    linha1_2.des_obj()
+    linha2_2.des_obj()
+    linha3.des_obj()
+}
+
+// Função para verificar o evento de tecla para iniciar o jogo
+function verificaInicioJogo(event){
+    if(event.key === 'Enter'){
+        cenaInicio = false; // Define cenaInicio como false para começar o jogo
+        reproduzirAudio(sondtrack1); // Inicia a trilha sonora do jogo
+    }
+}
+
+// Adiciona um event listener para verificar o evento de tecla para iniciar o jogo
+document.addEventListener('keydown', verificaInicioJogo)
+
+// Função principal para desenhar e atualizar o jogo
 function main(){
-    des.clearRect(0,0,1300,600)
-    desenha()
-    atualiza()
-    requestAnimationFrame(main)
+    if(cenaInicio){
+        desenhaTelaInicio();
+    }else{
+        des.clearRect(0, 0, 1300, 600);
+        desenha();
+        atualiza();
+    }
+    requestAnimationFrame(main);
 }
 
 main()

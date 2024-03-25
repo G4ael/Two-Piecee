@@ -54,7 +54,7 @@ class Player extends Obj{
             vidaImg.src = "assets/vida_5.png"
         }
 
-        des.drawImage(vidaImg, 1005, 117, 150, 50)
+        des.drawImage(vidaImg, 1005, 45, 150, 50)
     }
 
     anim(nome){
@@ -144,9 +144,10 @@ class Inimigo extends Obj{
 
 class Tiro extends Obj{
     constructor(x,y,w,h,a,velX,velY){
-        super(x,y,w,h,a);
-        this.velX = velX;
-        this.velY = velY;
+        super(x,y,w,h,a)
+        this.velX = velX
+        this.velY = velY
+
         this.frame = 1
         this.tempo = 0
     }
@@ -186,7 +187,6 @@ class TiroInimigo extends Obj{
 }
 
 class Text{
-    //arrumar o text depois
     des_text(text,x,y,cor,font){
         des.fillStyle = cor
         des.lineWidth = '5'
